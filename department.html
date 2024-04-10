@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Department</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<style>
+	p{
+		font-weight: bold;
+	}
+
+	.container{
+		margin-top: 15%;
+		margin-left: 3%;
+	}
+	.one{
+		float: left;
+
+	}
+	.two{
+		float: left;
+		margin-left: 3%;
+		margin-right: 3%;
+	}
+	.btn{
+		width:50%;
+		height: auto;
+	}
+
+	</style>
+<body>
+	<div class="container">
+		<input type="text" class="form-control" id="email" placeholder="Enter Email" hidden>
+	<div class="card text-center one mb-3" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Tamil Nadu Public Service Commission</h5>
+    <center><p>(TNPSC)</p></center>
+
+    <input type="text" class="form-control" id="tnpsc" value="TNPSC"  hidden>
+
+    <button type="submit" id="btn1" class="btn btn-primary">Join</a>
+    
+
+  </div>
+</div>
+
+
+<div class="card text-center two mb-3" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Tamil Nadu Uniformed Services Recruitment Board</h5>
+    <center><p>(TNUSRB)</p></center>
+
+    <input type="text" class="form-control" id="tnusrb" value="TNUSRB"  hidden>
+    
+    <button type="submit" id="btn2" class="btn btn-primary">Join</a>
+    
+  </div>
+</div> 
+
+<div class="card text-center three mb-3" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Staff Selection Commission</h5>
+    <center><p>(SSC)</p></center><br>
+
+    <input type="text" class="form-control" id="ssc" value="SSC"  hidden>
+
+    <button type="submit" id="btn3" class="btn btn-primary">Join</a>
+  </div>
+</div>
+</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+	const querstring=window.location.search;
+	console.log(querstring);
+
+	const urlParams=new URLSearchParams(querstring);
+
+	const email=urlParams.get('email');
+	console.log("email : "+email);
+	$("#email").val(email);
+});
+
+	$(document).on('click','#btn1',function(){
+		var tnpsc=$("#tnpsc").val();
+		console.log(tnpsc);
+		var email=$("#email").val();
+		console.log(email);
+
+		var data={
+			tnpsc:tnpsc,
+			email:email
+		};
+
+		$.ajax({
+			type:"POST",
+			url:"http://localhost/core-api/create_department.php",
+			data:data,
+			success:function(response){
+			alert("Registered SuccessFully");          
+        }, 
+        error: function(xhr, status, error) {
+            alert("Registered SuccessFully");
+            console.log(tnpsc);
+            window.location.href="tnpsc_display.html?department="+tnpsc;
+        }
+
+		});
+
+	});
+
+
+
+	$(document).on('click','#btn2',function(){
+		var tnusrb=$("#tnusrb").val();
+		console.log(tnusrb);
+		var email=$("#email").val();
+		console.log(email);
+
+
+		var data={
+			tnusrb:tnusrb,
+			email:email
+		};
+
+		$.ajax({
+			type:"POST",
+			url:"http://localhost/core-api/create_department.php",
+			data:data,
+			success:function(response){
+			alert("Registered SuccessFully");          
+        }, 
+        error: function(xhr, status, error) {
+            alert("Registered SuccessFully");
+            window.location.href="tnpsc_display.html?department="+tnusrb;
+            
+        }
+
+		});
+
+	});
+
+
+
+	$(document).on('click','#btn3',function(){
+		var ssc=$("#ssc").val();
+		console.log(ssc);
+		var email=$("#email").val();
+		console.log(email);
+
+		var data={
+			ssc:ssc,
+			email:email
+		};
+
+		$.ajax({
+			type:"POST",
+			url:"http://localhost/core-api/create_department.php",
+			data:data,
+			success:function(response){
+			alert("Registered SuccessFully");          
+        }, 
+        error: function(xhr, status, error) {
+            alert("Registered SuccessFully");
+            window.location.href="tnpsc_display.html?department="+ssc;
+            
+        }
+
+		});
+	});
+
+
+
+</script>
+</html>

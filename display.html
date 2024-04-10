@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+</head>
+<style>
+	.table{
+		width: 90%;
+		margin-left: 5%;
+		font-family: serif;
+		text-align: center;
+	}
+	h3{
+		margin-top: 2%;
+		color: tomato;
+		font-family: serif;	
+	}
+	.image{
+		width:40%;
+		height: auto;
+	}
+	.btn{
+		float: right;
+		margin-right: 5%;
+		margin-top: 3%;
+  	}
+
+</style>
+<body>
+	<center><h3>Display Question</h3></center><br>
+	<table class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th scope="col">S.no</th>
+      <th scope="col">Exam</th>
+      <th scope="col">Category</th>
+      <th scope="col">Test Name</th>
+      <th scope="col">Time in Minutes</th>
+      <th scope="col">No Of Question</th>
+      <th scope="col">File</th>      
+      <th scope="col">View</th>      
+      <th scope="col">Delete</th> 
+    </tr>
+  </thead>
+
+  <tbody id="leo"></tbody>
+
+</table>
+  <button type="submit" class="btn btn-primary">Add Question</button><br>
+
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+
+    $(document).ready(function(){
+
+// refreshTable start
+
+    refreshTable();
+
+    	function refreshTable(){
+    		fetch("http://localhost/core-api/read.php").then(res=>{
+			res.json().then(
+				data =>{
+						if(data.data.length>0){
+    					var ques="";
+    					data.data.forEach((answer) => {
+
+    						ques += "<tr class='a1'>";
+
+    						ques += "<td>" + answer.id +"</td>";
+    						
+    						ques += "<td>" + answer.exam +"</td>";
+
+    						ques += "<td>" + answer.category +"</td>";
+
+    						ques += "<td>" + answer.testname +"</td>";
+
+    						ques += "<td>" + answer.timer +"</td>";
+
+    						ques += "<td>" + answer.questions +"</td>";
+
+    						ques += "<td><img class='image' src='./image/" + answer.file +"' class='img'></td>";
+
+    						ques += "<td><button class='view' data-id='" + answer.testname + "'><span class='material-icons'>&#xe8f4;</span></button></td>";
+							
+							ques += "<td><button class='delete' data-id='" + answer.id + "'><span class='material-icons'>&#xe872;</span></button></td>";
+
+							
+    					});
+    					document.getElementById('leo').innerHTML=ques;
+    				}
+    			});
+    		});
+    	}
+    
+
+// refreshTable end
+
+// Add questions button start
+
+$(".btn").click(function(){
+	location.href="question.html";
+});
+
+// Add question button end
+
+// Delete button start
+
+$(document).on('click','.delete',function(){
+
+		var id= $(this).data('id');
+
+		var confirmation=confirm("Are You Sure You Want to Delete this data from S.no :" +id);
+
+		if(confirmation){	
+			$.ajax({
+				type:"DELETE",
+				url:"http://localhost/core-api/delete.php?id="+id,
+				success:function(){
+					refreshTable();
+				}
+			});
+		}
+
+		// function deletedata(id){
+		// 	$.ajax({
+		// 		type:"DELETE",
+		// 		url:"http://localhost/ajax-crud/delete.php?id="+id,
+		// 		success:function(){
+		// 			refreshTable();
+		// 		}
+		// 	});
+		// }
+
+	});
+
+	// Delete button end
+
+	// view button start
+
+$(document).on('click','.view',function(){
+	var testname=$(this).data('id');
+
+	var confirmation=confirm("Are You sure want to view the questions from testname : "+testname);
+
+	if(confirmation){
+		location.href="view_question_display.html?testname="+testname;
+	}
+
+});
+
+
+// view button end
+});
+
+
+
+</script>
+</html>
